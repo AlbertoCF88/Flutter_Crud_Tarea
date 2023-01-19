@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 class InpuntPlantillaFull extends StatefulWidget {
   //controlar el textController en el padre creando un ctrl por cada input
-  final TextEditingController
-      inputTextoCtrl; // TextEditingController inputPruebaCtrl = TextEditingController();
+  // TextEditingController inputPruebaCtrl = TextEditingController();
+  final TextEditingController inputTextoCtrl;
 
-  String
-      valorInput; //alorInput controlado por el padre como un string,     String valorInput="";
+  String valorInput; //valorInput controlado por el padre c
   final bool verIcono;
   final Icon icono; //Eje Icon(Icons.passwords)
   final double marginTop;
@@ -32,7 +31,6 @@ class InpuntPlantillaFull extends StatefulWidget {
       required this.label,
       required this.ayudaTexto,
       required this.tipoTeclado,
-      // required this.onClick,
       //opcionales con valor por defecto
       this.verIcono = true,
       this.ocultaTexto = false,
@@ -48,7 +46,7 @@ class InpuntPlantillaFull extends StatefulWidget {
 class _InpuntPlantillaFullState extends State<InpuntPlantillaFull> {
   @override
   Widget build(BuildContext context) {
-    //las variables del Stafull se llaan poniendo widget delante
+    //las variables del Statefulnse llaman poniendo widget delante
     return Container(
       height: widget.altura,
       margin: EdgeInsets.only(top: widget.marginTop),
@@ -62,28 +60,24 @@ class _InpuntPlantillaFullState extends State<InpuntPlantillaFull> {
         textCapitalization: TextCapitalization.sentences,
         //Estilos
         decoration: InputDecoration(
-          //borde
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
           ),
           counterText: widget.valorInput.length.toString() +
               "/" +
               widget.contadorLetras.toString(),
+          //controlar el color del texto segun numero de caracteres
           counterStyle: widget.valorInput.length >= widget.contadorLetras
               ? TextStyle(color: Colors.blue, fontSize: 14)
               : TextStyle(color: Colors.red, fontSize: 14),
-
-          hintText: widget.ayudaTexto,
-          //La etiqueta para espeficar el nombre input
-          label: Text(widget.label),
           //HinteTExt es un texto de ayuda
+          hintText: widget.ayudaTexto,
+          label: Text(widget.label),
           helperText: 'Mínimo de letras ' + widget.contadorLetras.toString(),
           icon: widget.verIcono ? widget.icono : null,
-          //para cambiar el color y la forma del  borde al hacer focus
         ),
         onChanged: (value) {
           widget.valorInput = value;
-          // widget.onClick();
           setState(() {
             widget.valorInput = value;
           });

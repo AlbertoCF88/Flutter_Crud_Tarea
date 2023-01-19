@@ -1,15 +1,13 @@
 import 'dart:developer';
 import 'dart:ui';
-
-import 'package:ejercicio01_crud/pages/detalleTarea_page.dart';
-import 'package:ejercicio01_crud/pages/editarTarea_page.dart';
-import 'package:ejercicio01_crud/pages/formularioFull_page.dart';
-import 'package:ejercicio01_crud/widget/appBarPlantilla_widget.dart';
-import 'package:ejercicio01_crud/widget/cardRoutePlantillaStless_widget.dart';
 import 'package:flutter/material.dart';
-
-import '../models/tarea_model.dart';
-import '../models/tarea_model.dart';
+//paginas
+import 'package:ejercicio01_crud/pages/pagesTarea/detalleTarea_page.dart';
+import 'package:ejercicio01_crud/pages/pagesTarea/editarTarea_page.dart';
+import 'package:ejercicio01_crud/pages/pagesTarea/formularioTarea_page.dart';
+//widges
+import 'package:ejercicio01_crud/widget/appBarPlantilla_widget.dart';
+import '../models/Tarea_model.dart';
 import '../widget/inputPlantillaStFull_widget.dart';
 
 class HomePageFull extends StatefulWidget {
@@ -30,45 +28,63 @@ class _HomePageFullState extends State<HomePageFull> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(50.0),
-            child: AppBarPlantilla(
-                titulo: "Tareas",
-                tooltip: "nueva tarea",
-                icono: Icon(Icons.library_add),
-                navegador: "/formulario")),
-        //cuerpo
-        body: ListView(
-          children: [
-            Center(
-              child: listaTareas.length > 0
-                  ? Text('Total Tareas: $cantidad ',
-                      style: TextStyle(
-                          fontSize: 20,
-                          letterSpacing: 3,
-                          fontStyle: FontStyle.italic))
-                  : Text("Agrega una tarea",
-                      style: TextStyle(
-                          fontSize: 20,
-                          letterSpacing: 3,
-                          fontWeight: FontWeight.bold)),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50.0),
+          child: AppBarPlantilla(
+              titulo: "Tareas",
+              tooltip: "nueva tarea",
+              icono: Icon(Icons.library_add),
+              navegador: "/formulario")),
+      //cuerpo
+      body: ListView(
+        children: [
+          Center(
+            child: listaTareas.length > 0
+                ? Text('Total Tareas: $cantidad ',
+                    style: TextStyle(
+                        fontSize: 20,
+                        letterSpacing: 3,
+                        fontStyle: FontStyle.italic))
+                : Text("Agrega una tarea ",
+                    style: TextStyle(
+                        fontSize: 20,
+                        letterSpacing: 3,
+                        fontWeight: FontWeight.bold)),
+          ),
+          //lista tareas
+          _vistaTarea(),
+          Container(
+            margin: new EdgeInsets.symmetric(vertical: 35),
+          )
+        ],
+      ),
+      //footer
+      floatingActionButtonLocation: listaTareas.length == 0
+          ? FloatingActionButtonLocation.centerDocked
+          : FloatingActionButtonLocation.endFloat,
+      //solo aparece si existen tareas
+      bottomNavigationBar: listaTareas.length == 0
+          ? BottomAppBar(
+              shape: const CircularNotchedRectangle(),
+              child: Container(height: 50.0),
+            )
+          : null,
+      floatingActionButton: listaTareas.length > 0
+          ? FloatingActionButton.extended(
+              onPressed: () {
+                _borrarTarea();
+              },
+              label: Text('Tareas seleccionadas', textAlign: TextAlign.center),
+              icon: const Icon(Icons.delete_forever),
+              backgroundColor: Colors.redAccent,
+            )
+          : FloatingActionButton(
+              onPressed: () => Navigator.pushNamed(context, "/personajes"),
+              tooltip: 'Peticion API',
+              child: const Icon(Icons.api),
+              backgroundColor: Colors.blue,
             ),
-            _vistaTarea(),
-          ],
-        ),
-        //footer
-        //solo aparece si existen tareas
-        floatingActionButton: listaTareas.length > 0
-            ? FloatingActionButton.extended(
-                onPressed: () {
-                  _borrarTarea();
-                },
-                label:
-                    Text('Tareas seleccionadas', textAlign: TextAlign.center),
-                icon: const Icon(Icons.delete_forever),
-                backgroundColor: Colors.redAccent,
-              )
-            : null);
+    );
   }
 
   Widget _vistaTarea() {
@@ -94,6 +110,7 @@ class _HomePageFullState extends State<HomePageFull> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(index.toString()),
+                        //Borrar la tarea de la lista
                         IconButton(
                           tooltip: 'borrar',
                           icon: const Icon(
@@ -107,7 +124,6 @@ class _HomePageFullState extends State<HomePageFull> {
                                 .toUpperCase();
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 content: Text("Tarea $mensaje borrada")));
-                            //Borrar la tarea de la lista
                             listaTareas.removeAt(index);
                             setState(() {
                               listaTareas;
@@ -115,6 +131,7 @@ class _HomePageFullState extends State<HomePageFull> {
                             });
                           },
                         ),
+                        //editar tarea
                         IconButton(
                           tooltip: 'editar',
                           icon: const Icon(
@@ -122,11 +139,6 @@ class _HomePageFullState extends State<HomePageFull> {
                             color: Colors.blue,
                           ),
                           onPressed: () async {
-                            //no metido en routes
-
-                            //Navegar a la otra pagina donde insertaremos tareas
-                            //1.Necesitamos una variable de tipo Tarea para guardar
-                            // la tarea que me devuelva la otra pagina
                             tarea = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -135,6 +147,7 @@ class _HomePageFullState extends State<HomePageFull> {
                                         tareaIndex: index)));
                           },
                         ),
+                        //ver tarea
                         IconButton(
                           tooltip: 'ver',
                           icon: const Icon(
@@ -146,8 +159,8 @@ class _HomePageFullState extends State<HomePageFull> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => DetallePage(
-                                        tarea: listaTareas[index],
-                                        tareaIndex: index)));
+                                          tarea: listaTareas[index],
+                                        )));
                           },
                         ),
                       ],

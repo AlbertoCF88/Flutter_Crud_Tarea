@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../models/tarea_model.dart';
-import '../widget/appBarPlantilla_widget.dart';
-import '../widget/inputPlantillaStFull_widget.dart';
+import '../../models/Tarea_model.dart';
+import '../../widget/appBarPlantilla_widget.dart';
+import '../../widget/inputPlantillaStFull_widget.dart';
 
 class EditarTarea extends StatefulWidget {
-  late Tarea tarea;
-  late int tareaIndex;
+  late Tarea tarea; //OBJETO enviado desde HomeFull
+  late int tareaIndex; //index desde HomFull
 
   EditarTarea({
     super.key,
@@ -29,7 +29,7 @@ class _EditarTareaState extends State<EditarTarea> {
 
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
+          preferredSize: Size.fromHeight(50.0),
           child: AppBarPlantilla(
               titulo: "Editar Tarea",
               tooltip: "volver",
@@ -39,8 +39,7 @@ class _EditarTareaState extends State<EditarTarea> {
       body: Center(
         child: Column(
           children: [
-            //necesito forzar crear una nueva isntancia del Home y
-            //no volver atas sin mas
+            //inputs
             InpuntPlantillaFull(
                 icono: Icon(Icons.title_outlined),
                 valorInput: valorTitulo,
@@ -57,12 +56,15 @@ class _EditarTareaState extends State<EditarTarea> {
                 ayudaTexto: "Descripcion",
                 inputTextoCtrl: descCtrl,
                 tipoTeclado: TextInputType.text),
-
-            ElevatedButton(
-                onPressed: () {
-                  _mod(tituloCtrl, descCtrl);
-                },
-                child: const Text('Modificar tarea')),
+            //btn
+            Container(
+              margin: new EdgeInsets.symmetric(vertical: 35),
+              child: ElevatedButton(
+                  onPressed: () {
+                    _mod(tituloCtrl, descCtrl);
+                  },
+                  child: const Text('Modificar tarea')),
+            ),
           ],
         ),
       ),
@@ -70,41 +72,17 @@ class _EditarTareaState extends State<EditarTarea> {
   }
 
   _mod(TextEditingController tituloCtrl, TextEditingController descCtrl) {
-    for (var i = 0; i < Tarea.staticTareas.length; i++) {
-      if (tituloCtrl.text == "") {
-        tituloCtrl.text = widget.tarea.titulo.toString();
-      }
-      if (descCtrl.text == "") {
-        descCtrl.text = widget.tarea.descripcion.toString();
-      }
-      if (widget.tareaIndex == i) {
-        Tarea.staticTareas[i].titulo = tituloCtrl.text;
-        Tarea.staticTareas[i].descripcion = descCtrl.text;
-        return Navigator.pushNamed(context, '/');
-      }
+    //si deja el titulo en blanco pon el texto que tiene por defecto en la tarea que le viene
+    if (tituloCtrl.text == "") {
+      tituloCtrl.text = widget.tarea.titulo.toString();
     }
+    //si deja la descripcion en blanco pon el texto que tiene por defecto en la tarea que le viene
+    if (descCtrl.text == "") {
+      descCtrl.text = widget.tarea.descripcion.toString();
+    }
+    //guardamos la tarea modificada en la posicion adecuada que ya viene el indice desde HomeFull_page
+    Tarea.staticTareas[widget.tareaIndex].titulo = tituloCtrl.text;
+    Tarea.staticTareas[widget.tareaIndex].descripcion = descCtrl.text;
+    return Navigator.pushNamed(context, '/');
   }
 }
-
-/**
- * 
- * 
- *  return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
-          child: AppBarPlantilla(
-              titulo: "Nueva tarea",
-              tooltip: "nueva tarea",
-              icono: Icon(Icons.exit_to_app),
-              navegador: "/")),
-      //cuerpo
-      body: Center(
-        child: Column(
-          children: [
-       
-          ],
-        ),
-      ),
-    );
-  }
- */

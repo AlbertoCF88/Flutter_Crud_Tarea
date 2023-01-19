@@ -1,6 +1,6 @@
 class Tarea {
-  static int cantidadTareas = 0;
-  static List staticTareas = [];
+  static int cantidadTareas = 0;//para saber cuantos Tarea he instanciado
+  static List staticTareas = [];//en vez de pasarlo como parametros me parece mas comodo hacerlo como una varible estatica
 
   String? _titulo;
   String? _descripcion;

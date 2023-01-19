@@ -6,6 +6,7 @@ class CardRoutePlantilla extends StatelessWidget {
   final Color colorFondo; //Color.fromRGBO
   final Color ColorSombra;
   final Icon icono; //eje Icon(Icons.add_a_photo, color: Colors.white, size: 30)
+  var img;
   var titulo;
   var subtitulo;
   final bool iconoVer;
@@ -17,6 +18,7 @@ class CardRoutePlantilla extends StatelessWidget {
     required this.colorFondo,
     required this.ColorSombra, //Color.fromARGB
     required this.icono,
+    required this.img,
     required this.titulo,
     required this.ruta,
     //Opcionales
@@ -45,7 +47,20 @@ class CardRoutePlantilla extends StatelessWidget {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => ruta));
             },
-            leading: iconoVer ? icono : null,
+            leading: iconoVer == true
+                ? icono
+                : ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(50),
+                      topLeft: Radius.circular(50),
+                    ),
+                    child: FadeInImage(
+                      placeholder: AssetImage('../assets/image/carga.gif'),
+                      image: img ?? '???',
+                      height: 100,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
             title: Text(
               titulo,
               style: TextStyle(

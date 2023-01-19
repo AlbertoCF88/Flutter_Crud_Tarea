@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppBarPlantilla extends StatelessWidget {
   String titulo;
   String tooltip;
-  String navegador; //'/formulario'
+  String navegador; //eje:  '/formulario'
   Icon icono; //Icon(Icons.library_add)
   AppBarPlantilla({
     super.key,
@@ -15,13 +15,6 @@ class AppBarPlantilla extends StatelessWidget {
 //crear nueva instancias si crear pila de navegacion
 //para poder usar var staticas y las pinte
 
-//ejemplo padre:
-  /*   appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0), // here the desired height
-          child: AppBarPlantilla(
-              titulo: "Tareas",
-              tooltip: "nueva tarea",
-              navegador: "/formulario")),*/
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,6 +24,7 @@ class AppBarPlantilla extends StatelessWidget {
         //quitar flecha atras
         automaticallyImplyLeading: false,
         actions: <Widget>[
+          //icono navegador correspondiente
           IconButton(
             icon: icono,
             tooltip: tooltip,
@@ -38,8 +32,9 @@ class AppBarPlantilla extends StatelessWidget {
               Navigator.pushNamed(context, navegador);
             },
           ),
+          //icono nombre
           IconButton(
-            icon: const Icon(Icons.navigate_next),
+            icon: const Icon(Icons.account_circle),
             tooltip: 'Contacto',
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(

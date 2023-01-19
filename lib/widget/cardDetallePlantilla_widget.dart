@@ -3,31 +3,14 @@ import 'package:flutter/material.dart';
 class CardDetallePlantilla extends StatelessWidget {
   final Color colorFondo;
   final Color colorSombra;
-  final ImageProvider imagen;
+  var imagen;
   final double altoImg;
   var titulo;
   var Subtitulo;
-  final List<Map<dynamic, dynamic>> listaTextos;
   final double alturaTextoAdiocinal;
   final bool subtituloVer;
-
-  CardDetallePlantilla({
-    super.key,
-    required this.colorFondo,
-    required this.colorSombra,
-    required this.imagen,
-    required this.titulo,
-    required this.Subtitulo,
-    //opcionales
-    this.subtituloVer = true,
-    this.altoImg = 0.5, //porcentaje de la anchura Pantalla
-    this.alturaTextoAdiocinal = 100,
-    this.listaTextos = const [],
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    /*Eje  final List<Map<String, dynamic>> listaTextos = [
+  final List<Map<dynamic, dynamic>> listaTextos;
+  /*Eje  final List<Map<String, dynamic>> listaTextos = [
       {
         'ti': 'titulo',
         'sub': 'subtitulo',
@@ -41,18 +24,33 @@ class CardDetallePlantilla extends StatelessWidget {
         'sub': 'd',
       },
     ];*/
+  CardDetallePlantilla({
+    super.key,
+    required this.colorFondo,
+    required this.colorSombra,
+    required this.imagen,
+    required this.titulo,
+    required this.Subtitulo,
+    //opcionales
+    this.subtituloVer = true,
+    this.altoImg = 0.45, //porcentaje de la anchura Pantalla
+    this.alturaTextoAdiocinal = 100,
+    this.listaTextos = const [],
+  });
 
-    var imgNotFound = AssetImage('assets/images/homer.jpg');
+  @override
+  Widget build(BuildContext context) {
+    var imgNotFound = AssetImage('../assets/image/carga.gif');
     var alturaPantalla = MediaQuery.of(context).size.height * altoImg;
     return Card(
       color: colorFondo,
       shadowColor: colorSombra,
       clipBehavior: Clip.antiAlias,
-      //Cambiar el grosor del borde como el radio
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       elevation: 20,
       child: Column(
         children: [
+          //imagen
           FadeInImage(
             image: imagen == null ? imgNotFound : imagen,
             placeholder: AssetImage('assets/images/carga.gif'),
@@ -62,12 +60,14 @@ class CardDetallePlantilla extends StatelessWidget {
           ),
           Center(
             child: ListTile(
+              //titulo
               title: Text(titulo,
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,
                     letterSpacing: 3,
                     fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.ellipsis,
                     shadows: [
                       Shadow(
                           color: Colors.black,
@@ -75,9 +75,11 @@ class CardDetallePlantilla extends StatelessWidget {
                           offset: Offset(2, 2))
                     ],
                   )),
+              //subtitulo
               subtitle: subtituloVer ? Text(Subtitulo) : null,
             ),
           ),
+          //aqui va la informacion adicional listaTextos
           SizedBox(
             height: alturaTextoAdiocinal,
             child: ListView.builder(
@@ -126,9 +128,13 @@ class CardDetallePlantilla extends StatelessWidget {
               color: Colors.black54,
             ),
           )),
-          Text(listaTextos[index]['ti'],
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          Text(listaTextos[index]['sub']),
+          Column(
+            children: [
+              Text(listaTextos[index]['ti'],
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text(listaTextos[index]['sub']),
+            ],
+          ),
         ]);
   }
 

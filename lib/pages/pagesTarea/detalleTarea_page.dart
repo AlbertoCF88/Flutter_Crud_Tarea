@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import '../models/tarea_model.dart';
-import '../widget/appBarPlantilla_widget.dart';
+import '../../models/Tarea_model.dart';
+import '../../widget/appBarPlantilla_widget.dart';
 
 class DetallePage extends StatelessWidget {
-  late Tarea tarea;
-  late int tareaIndex;
+  late Tarea tarea; //objeto tarea enviado desde el homeFull
+
   DetallePage({
     super.key,
-    required this.tareaIndex,
     required this.tarea,
   });
 
@@ -15,7 +14,7 @@ class DetallePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(50.0), // here the desired height
+            preferredSize: Size.fromHeight(50.0), 
             child: AppBarPlantilla(
                 titulo: "Detalle ",
                 tooltip: "volver",
